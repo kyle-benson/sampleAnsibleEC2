@@ -3,10 +3,11 @@
 - hosts: localhost
   connection: local
   gather_facts: False
-
+  vars_prompt:
+    inst_name: "What's the name of the instance?"
   tasks:
 
-    - name: Provision a set of instances
+    - name: Create a series of RHEL 7.1 VMs in AWS, based on the count number listed below
       ec2:
          key_name: ansible_test
          instance_type: t2.micro
@@ -18,6 +19,11 @@
          count_tag:
             Name: Demo
          instance_tags:
-            Name: Demo
+            Name: "{{inst_name}}"
+            Tower: ""
       register: ec2
-    - local_action: osx_say msg="Great job Kyle! That was a really, really cool demo." voice=Bruce
+      register: result
+
+    - name: Have my local computer give me a pat on the back for a job well done.
+      local_action: osx_say msg="Great job Kyle! That was a really, really cool demo." voice=Victoria
+      when: result|succeeded
