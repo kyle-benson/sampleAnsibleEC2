@@ -3,6 +3,8 @@
 - hosts: localhost
   connection: local
   gather_facts: False
+  vars_prompt:
+    inst_name: test
   tasks:
 
     - name: Create a series of RHEL 7.1 VMs in AWS, based on the count number listed below
@@ -18,6 +20,6 @@
             Name: Demo
          instance_tags:
             Name: "{{inst_name}}"
-            Tower: "Tower"
+            Tower: ""
       register: ec2
       register: result
