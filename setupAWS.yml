@@ -1,0 +1,23 @@
+# demo_setup.yml
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+
+    - name: Create a series of RHEL 7.1 VMs in AWS, based on the count number listed below
+      ec2:
+         key_name: ansible_test
+         instance_type: t2.micro
+         aws_region: us-east-1
+         image: "ami-12663b7a"
+         wait: true
+         exact_count: 3
+         vpc_subnet_id: subnet-33888e09
+         count_tag:
+            Name: Demo
+         instance_tags:
+            Name: "{{inst_name}}"
+            Tower: "Tower"
+      register: ec2
+      register: result
